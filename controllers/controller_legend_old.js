@@ -3,12 +3,12 @@ geodash.controllers["controller_legend"] = function(
   $element,
   $controller,
   state,
-  map_config,
+  dashboard,
   live)
 {
   angular.extend(this, $controller('GeoDashControllerBase', {$element: $element, $scope: $scope}));
   //
-  $scope.map_config = map_config;
+  $scope.dashboard = dashboard;
   $scope.state = state;
   //////////////
   // Watch
@@ -39,11 +39,11 @@ geodash.controllers["controller_legend"] = function(
   };
 
   $scope.updateVariables = function(){
-    var arrayFilter = $scope.map_config.legendlayers;
+    var arrayFilter = $scope.dashboard.legendlayers;
 
-    if("baselayers" in $scope.map_config && $scope.map_config.baselayers != undefined)
+    if("baselayers" in $scope.dashboard && $scope.dashboard.baselayers != undefined)
     {
-      var baselayers = $.grep($scope.map_config.baselayers,function(x, i){ return $.inArray(x["id"], arrayFilter) != -1; });
+      var baselayers = $.grep($scope.dashboard.baselayers,function(x, i){ return $.inArray(x["id"], arrayFilter) != -1; });
       baselayers.sort(function(a, b){ return $.inArray(a["id"], arrayFilter) - $.inArray(b["id"], arrayFilter); });
       $scope.baselayers = baselayers;
     }
@@ -52,10 +52,10 @@ geodash.controllers["controller_legend"] = function(
       $scope.baselayers = [];
     }
 
-    if("featurelayers" in $scope.map_config && $scope.map_config.featurelayers != undefined)
+    if("featurelayers" in $scope.dashboard && $scope.dashboard.featurelayers != undefined)
     {
-      //var featurelayers = $.map($scope.map_config.featurelayers, function(item, key){ return {'key': key, 'item': item}; });
-      var featurelayers = $.grep($scope.map_config.featurelayers,function(x, i){ return $.inArray(x["id"], arrayFilter) != -1; });
+      //var featurelayers = $.map($scope.dashboard.featurelayers, function(item, key){ return {'key': key, 'item': item}; });
+      var featurelayers = $.grep($scope.dashboard.featurelayers,function(x, i){ return $.inArray(x["id"], arrayFilter) != -1; });
       featurelayers.sort(function(a, b){ return $.inArray(a["id"], arrayFilter) - $.inArray(b["id"], arrayFilter); });
       $scope.featurelayers = featurelayers;
     }
@@ -66,8 +66,8 @@ geodash.controllers["controller_legend"] = function(
 
   };
   $scope.updateVariables();
-  $scope.$watch('map_config.featurelayers', $scope.updateVariables);
-  $scope.$watch('map_config.legendlayers', $scope.updateVariables);
+  $scope.$watch('dashboard.featurelayers', $scope.updateVariables);
+  $scope.$watch('dashboard.legendlayers', $scope.updateVariables);
   $scope.$watch('state', $scope.updateVariables);
   //////////////
   var jqe = $($element);

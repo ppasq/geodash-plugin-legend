@@ -1,0 +1,92 @@
+---
+legend:
+  type: object
+  label: Legend
+  placeholder: "Legend"
+  required: false
+  description: "Legend"
+  schema:
+    verbose_singular: Legend
+    fields:
+      - id: position
+        type: object
+        label: Position
+        placeholder: "position"
+        required: false
+        description: "Position of the legend."
+        schema:
+          verbose_singular: Position
+          fields:
+            - id: top
+              type: text
+              label: Position / Top
+              placeholder: auto
+              required: true
+              description: "The top position of the legend (in pixels or percentage)."
+            - id: bottom
+              type: text
+              label: Position / Bottom
+              placeholder: auto
+              required: true
+              description: "The bottom position of the legend (in pixels or percentage)."
+            - id: left
+              type: text
+              label: Position / Left
+              placeholder: auto
+              required: true
+              description: "The left position of the legend (in pixels or percentage)."
+            - id: right
+              type: text
+              label: Position / Right
+              placeholder: auto
+              required: true
+              description: "The right position of the legend (in pixels or percentage)."
+      - id: width
+        type: text
+        label: Width
+        placeholder: width
+        required: true
+        description: "The width of the legend (in pixels or percentage)."
+      - id: height
+        type: text
+        label: Height
+        placeholder: height
+        required: true
+        description: "The height of the legend (in pixels or percentage)."
+      - id: grid
+        type: stringarray
+        label: Grid
+        placeholder: grid
+        required: true
+        description: "The classes of the grid.  First value is for the left.  Second is for the right.  You can use bootstrap classes."
+      - id: css
+        type: object
+        label: CSS
+        placeholder: "css"
+        required: false
+        description: "Additional CSS for the legend."
+        schema:
+          verbose_singular: CSS
+          fields:
+            - id: properties
+              type: objectarray
+              label: Legend Additional CSS Properties
+              placeholder: "properties"
+              required: false
+              description: "The additional css properties of the legend, such as margin, padding, border, etc."
+              schema:
+                verbose_singular: Property
+                verbose_plural: Properties
+                fields:
+                  - id: name
+                    type: text
+                    label: Property Name
+                    placeholder: "name"
+                    required: true
+                    description: "The name of the property."
+                  - id: value
+                    type: template
+                    label: Property value
+                    placeholder: "value"
+                    required: true
+                    description: "The value of the property."
