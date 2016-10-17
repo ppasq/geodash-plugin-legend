@@ -58,6 +58,15 @@ geodash.controllers.GeoDashControllerLegend = function($scope, $element, $contro
       }
     }
 
+    if($.inArray("legend", extract("view.controls", $scope.state, [])) != -1)
+    {
+      styleMap.display = "block";
+    }
+    else
+    {
+      styleMap.display = "none";
+    }
+
     return geodash.codec.formatCSS(styleMap);
   };
 
