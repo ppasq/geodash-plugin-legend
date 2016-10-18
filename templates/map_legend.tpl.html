@@ -67,7 +67,7 @@
                 text-anchor="start"
                 font-size="14px"
                 fill="#444444"
-                ng-bind-html="{{ getRange(layer)| first | extract : 'label' }}"
+                ng-svg-text="{{ getRange(layer)| first | extract : 'label' }}"
               ></text>
               <text
                 ng-if="getRange(layer) | ternary_defined : true : false"
@@ -76,7 +76,7 @@
                 text-anchor="end"
                 font-size="14px"
                 fill="#444444"
-                ng-bind-html="{{ getRange(layer)| last | extract : 'label' }}"
+                ng-svg-text="{{ getRange(layer)| last | extract : 'label' }}"
               ></text>
             </svg>
           </div>
