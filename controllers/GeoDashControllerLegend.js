@@ -133,6 +133,31 @@ geodash.controllers.GeoDashControllerLegend = function($scope, $element, $contro
     }
     return url;
   };
+
+  $scope.getRange = function(layer, style)
+  {
+    var styleID = angular.isDefined(style) ? style : 0;
+    var range = undefined;
+    if(angular.isDefined(layer))
+    {
+      var styleID = 0;
+      var symbolizers = extract(["carto", "styles", styleID, "symbolizers"], layer, []);
+      for(var i = 0; i < symbolizers.length; i++)
+      {
+        var symbolizer = symbolizers[i];
+        if(symbolizer.type == "polygon")
+        {
+          range = extract(["metadata", "range"], symbolizer);
+          if(angular.isDefined(range))
+          {
+            break;
+          }
+        }
+      }
+    }
+    return range;
+  };
+
   $scope.getColorRamp = function(layer, style)
   {
     var styleID = angular.isDefined(style) ? style : 0;
