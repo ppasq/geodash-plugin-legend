@@ -158,10 +158,10 @@ geodash.controllers.GeoDashControllerLegend = function($scope, $element, $contro
     return range;
   };
 
-  $scope.getColorRamp = function(layer, style)
+  $scope.getClasses = function(layer, style)
   {
     var styleID = angular.isDefined(style) ? style : 0;
-    var ramp = undefined;
+    var classes = undefined;
     if(angular.isDefined(layer))
     {
       var styleID = 0;
@@ -171,15 +171,31 @@ geodash.controllers.GeoDashControllerLegend = function($scope, $element, $contro
         var symbolizer = symbolizers[i];
         if(symbolizer.type == "polygon")
         {
-          ramp = extract(["dynamic", "options", "colors", "ramp"], symbolizer);
-          if(angular.isDefined(ramp))
+          classes = extract(["dynamic", "options", "classes"], symbolizer);
+          if(angular.isDefined(classes))
           {
             break;
+          }
+          else
+          {
+            ramp = extract(["dynamic", "options", "colors", "ramp"], symbolizer);
+            if(angular.isDefined(ramp))
+            {
+              classes = ramp.map(function(x){ return {"label": undefined, "color": x}; });
+              break;
+            }
           }
         }
       }
     }
-    return ramp;
+
+    var classifier = extract("classifier", geodash.config);
+    if(angular.isDefined(classifier))
+    {
+      classes = classifier(layer, style, classes);
+    }
+
+    return classes;
   };
 
   $scope.updateVariables = function()
@@ -240,11 +256,13 @@ geodash.controllers.GeoDashControllerLegend = function($scope, $element, $contro
       $scope.state = undefined;
       $scope.newState = geodash.util.deepCopy(args.state);
       $scope.updateVariables();
+      geodash.ui.update($element);
 
       setTimeout(function(){
         $scope.$apply(function(){
           $scope.state = $scope.newState;
           $scope.updateVariables();
+          setTimeout(function(){ geodash.ui.update($element); }, 0);
         });
       },0);
     }
