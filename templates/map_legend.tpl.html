@@ -74,7 +74,7 @@
                 data-container="#geodash-map-legend"
                 ng-attr-title="{{ class.title }}">
                 <tspan
-                  dx="6px"
+                  dx="2px"
                   font-size="12px"
                   fill="#000000"
                   ng-svg-text="{{ class.label | default_if_undefined : '' }}">
@@ -101,7 +101,11 @@
             </svg>
           </div>
         </div>
-        <div class="row"><div class="col-sm-12"><span class="h6" ng-bind-html="'Source: '+layer.source.attribution"></span></div></div>
+        <div
+          ng-if="layer.legend.ui.source | default_if_undefined : true"
+          class="row">
+          <div class="col-sm-12"><span class="h6" ng-bind-html="'Source: '+layer.source.attribution"></span></div>
+        </div>
       </div>
     </div>
   </div>
