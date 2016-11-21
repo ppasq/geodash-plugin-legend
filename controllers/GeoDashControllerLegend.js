@@ -165,26 +165,39 @@ geodash.controllers.GeoDashControllerLegend = function($scope, $element, $contro
     if(angular.isDefined(layer))
     {
       var styleID = 0;
-      var symbolizers = extract(["carto", "styles", styleID, "symbolizers"], layer, []);
-      for(var i = 0; i < symbolizers.length; i++)
+      var styleObject = extract(["carto", "styles", styleID], layer, []);
+      if(angular.isDefined(styleObject))
       {
-        var symbolizer = symbolizers[i];
-        if(symbolizer.type == "polygon")
+        var legendType = extract("legend.type", styleObject);
+        if(legendType == "graduated")
         {
-          classes = extract(["dynamic", "options", "classes"], symbolizer);
-          if(angular.isDefined(classes))
+          var symbolizers = extract("symbolizers", styleObject, []);
+          for(var i = 0; i < symbolizers.length; i++)
           {
-            break;
-          }
-          else
-          {
-            ramp = extract(["dynamic", "options", "colors", "ramp"], symbolizer);
-            if(angular.isDefined(ramp))
+            var symbolizer = symbolizers[i];
+            if(symbolizer.type == "polygon")
             {
-              classes = ramp.map(function(x){ return {"label": undefined, "color": x}; });
-              break;
+              classes = extract(["dynamic", "options", "classes"], symbolizer);
+              if(angular.isDefined(classes))
+              {
+                break;
+              }
+              else
+              {
+                var ramp = extract(["dynamic", "options", "colors", "ramp"], symbolizer);
+                if(angular.isDefined(ramp))
+                {
+                  classes = ramp.map(function(x){ return {"label": undefined, "color": x}; });
+                  break;
+                }
+              }
             }
           }
+        }
+        else if(legendType == "heatmap")
+        {
+          var ramp = extract("layer.Heatmap.DEFAULT_GRADIENT", ol);
+          classes = ramp.map(function(x){ return {"label": undefined, "color": x}; });
         }
       }
     }

@@ -107,6 +107,67 @@
           <div class="col-sm-12"><span class="h6" ng-bind-html="'Source: '+layer.source.attribution"></span></div>
         </div>
       </div>
+      <div ng-if="getLegendType(layer) == 'heatmap'" ng-init="style = getCurrentStyle(layer)" class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-12">
+            <span
+              class="h5"
+              style="{{ {'display': 'inline-block', 'max-width': '100%', 'overflow': 'hidden', 'height': '1.2rem'} | css }}"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              data-container="#geodash-map-legend"
+              ng-attr-title="{{ layer.title }}"
+              ng-bind-html="layer.title"></span>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:8px;"><div class="col-sm-12"><span class="h6" ng-bind-html="('('+style.description+')') | md2html"></span></div></div>
+        <div class="row" style="margin-bottom:8px;">
+          <div class="col-sm-12" ng-init="classes = getClasses(layer)">
+            <svg
+              width="100%"
+              ng-attr-height="{{ getRange(layer) | ternary_defined : '40px' : '20px' }}"
+              version="1.0"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect
+                ng-repeat="class in classes track by $index"
+                ng-attr-x="{{ $index | percent: classes.length }}%"
+                y="0"
+                ng-attr-width="{{ 1 | percent: classes.length }}%"
+                ng-attr-height="{{ '20px' }}"
+                ng-attr-fill="{{ class.color | default_if_undefined : '#000000' }}"
+                stroke-width="1"
+                stroke="#000000"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                data-container="#geodash-map-legend"
+                ng-attr-title="{{ class.title }}"/>
+              <text
+                ng-if="getRange(layer) | ternary_defined : true : false"
+                x="0px"
+                y="34px"
+                text-anchor="start"
+                font-size="12px"
+                fill="#444444"
+                ng-svg-text="{{ getRange(layer) | first | extract : 'label' }}"
+              ></text>
+              <text
+                ng-if="getRange(layer) | ternary_defined : true : false"
+                x="100%"
+                y="34px"
+                text-anchor="end"
+                font-size="12px"
+                fill="#444444"
+                ng-svg-text="{{ getRange(layer) | last | extract : 'label' }}"
+              ></text>
+            </svg>
+          </div>
+        </div>
+        <div
+          ng-if="layer.legend.ui.source | default_if_undefined : true"
+          class="row">
+          <div class="col-sm-12"><span class="h6" ng-bind-html="'Source: '+layer.source.attribution"></span></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
